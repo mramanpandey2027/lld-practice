@@ -8,6 +8,21 @@ public class Main {
 
         VendingMachine vendingMachine = new VendingMachine(inventory);
 
+        vendingMachine.insertCoin(Coin.TEN);
+        vendingMachine.insertCoin(Coin.TEN);
+        vendingMachine.insertCoin(Coin.ONE);
+
+        vendingMachine.selectItem(102);
+        vendingMachine.dispense();
+        try {
+            vendingMachine.insertCoin(Coin.TEN);
+            vendingMachine.insertCoin(Coin.TWO);
+            vendingMachine.selectItem(101);
+            vendingMachine.cancel();
+        } catch (IllegalStateException e) {
+            System.out.println("exception " + e.getMessage());
+            vendingMachine.cancel();
+        }
 
     }
 }

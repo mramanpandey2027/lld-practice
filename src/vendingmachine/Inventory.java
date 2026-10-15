@@ -3,9 +3,10 @@ package vendingmachine;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Inventory {
-    private final Map<Integer, ItemShelf> itemShelfMap = new HashMap<>();
+    private final Map<Integer, ItemShelf> itemShelfMap = new ConcurrentHashMap<>();
 
     public void addItemShelf(ItemShelf itemShelf) {
         itemShelfMap.put(itemShelf.getId(), itemShelf);

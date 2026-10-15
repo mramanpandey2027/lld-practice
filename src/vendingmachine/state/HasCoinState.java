@@ -12,11 +12,21 @@ public class HasCoinState implements State {
 
     @Override
     public void selectItem(VendingMachine vendingMachine, int code) {
-        if(vendingMachine.getInventory().isAvailable(code)) {
-            vendingMachine.setSelectedItemCode(code);
-            System.out.println("item selected" + vendingMachine.getInventory().getShelf(code).getId());
-            vendingMachine.setCurrentState(new DispenseState());
+        if(!vendingMachine.getInventory().isAvailable(code)) {
+            throw new IllegalStateException("Item not available " + code);
         }
+
+        int itemCost = vendingMachine.getInventory().getShelf(code).getItemCost();
+        int insertedCost = vendingMachine.getInsertedBalance();
+
+        if(itemCost > insertedCost) {
+            int left_amt = itemCost - insertedCost;
+            throw new IllegalStateException("item is more costlier by " + left_amt);
+        }
+
+        vendingMachine.setSelectedItemCode(code);
+        System.out.println("item selected" + vendingMachine.getInventory().getShelf(code).getId());
+        vendingMachine.setCurrentState(new DispenseState());
     }
 
     @Override
@@ -26,6 +36,7 @@ public class HasCoinState implements State {
 
     @Override
     public void cancel(VendingMachine vendingMachine) {
+        System.out.println("cancelling transaction. refunding " + vendingMachine.getInsertedBalance());
         vendingMachine.clearBalance();
         vendingMachine.setSelectedItemCode(0);
         vendingMachine.setCurrentState(new IdleState());

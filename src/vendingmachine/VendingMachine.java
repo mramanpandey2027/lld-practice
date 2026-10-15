@@ -48,4 +48,11 @@ public class VendingMachine {
     public Inventory getInventory() {
         return inventory;
     }
+    public int getInsertedBalance() {
+        int sum=0;
+        for(Coin coin: insertedCoins) {
+            sum+=coin.getValue();
+        }
+        return sum;
+    }
 }
